@@ -8,7 +8,7 @@ OBJS = $(OBJ)/main.o $(OBJ)/linked_list.o $(OBJ)/array_list.o
 
 RM = rm -f
 CC = clang
-CFLAGS = -std=c99 -g -Wall
+CFLAGS = -std=c99 -g -Wall -Wextra -Wpedantic -Werror
 CPPFLAGS = -Iinclude
 
 .PHONY: all

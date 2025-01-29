@@ -1,10 +1,13 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "array_list.h"
 
 ArrayList *ArrayList_new(void) {
+    int INITIAL_CAPACITY = 10;
+
     ArrayList *list = malloc(sizeof(ArrayList));
-    list->vals = malloc(10 * sizeof(int));
+    list->vals = malloc(INITIAL_CAPACITY * sizeof(int));
     list->size = 0;
 
     return list;
@@ -15,8 +18,10 @@ int ArrayList_isFull(ArrayList *list) {
 }
 
 void ArrayList_expand(ArrayList *list) {
-    int *newVals = malloc(2 * sizeof(list->vals));
-    memcpy(newVals, list->vals, sizeof(list->vals));
+    int EXPANSION_FACTOR = 2;
+
+    int *newVals = malloc(EXPANSION_FACTOR * sizeof(list->vals));
+    memcpy(newVals, list->vals, list->size * sizeof(int));
     free(list->vals);
     list->vals = newVals;
 }
