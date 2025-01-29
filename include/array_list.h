@@ -3,6 +3,7 @@
 typedef struct ArrayList {
     int *vals;
     int size;
+    int capacity;
 } ArrayList;
 
 ArrayList *ArrayList_new(void);

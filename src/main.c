@@ -6,7 +6,7 @@
 
 void print_list(ArrayList *list, char *separator);
 
-// void print_contains(ArrayList *list, int val);
+void print_contains(ArrayList *list, int val);
 
 int main(void) {
     char *separator = ", ";
@@ -28,16 +28,34 @@ int main(void) {
 
     print_list(list, separator);
 
-    for (int i = 0; i < 9; i++) {
+    ArrayList_addIndex(list, 0, 20);
+    printf("20 added\n");
+    printf("size of list = %d\n", list->size);
+
+    print_list(list, separator);
+
+    ArrayList_addIndex(list, 2, 40);
+    printf("40 added\n");
+    printf("size of list = %d\n", list->size);
+
+    print_list(list, separator);
+
+    ArrayList_addIndex(list, 4, 30);
+    printf("30 added\n");
+    printf("size of list = %d\n", list->size);
+
+    print_list(list, separator);
+
+    printf("capacity = %d\n", list->capacity);
+
+    for (int i = 0; i < 6; i++) {
         ArrayList_add(list, i);
+        print_list(list, separator);
     }
 
     printf("size of list = %d\n", list->size);
     print_list(list, separator);
-
-    /*LinkedList_addIndex(list, 1, 8);
-    printf("8 inserted into position 2\n");
-    printf("size of list = %d\n", list->size);
+    printf("capacity = %d\n", list->capacity);
 
     print_list(list, separator);
 
@@ -46,7 +64,15 @@ int main(void) {
     print_contains(list, 7);
     print_contains(list, 0);
     print_contains(list, -2);
-    print_contains(list, 100);*/
+    print_contains(list, 100);
+
+    ArrayList_remove(list, 4);
+
+    printf("size of list = %d\n", list->size);
+    print_list(list, separator);
+
+    ArrayList_removeIndex(list, 3);
+    print_list(list, separator);
 }
 
 void print_list(ArrayList *list, char *separator) {
@@ -71,7 +97,6 @@ void print_list(ArrayList *list, char *separator) {
     printf("\n");
 }
 
-/*
 void print_contains(ArrayList *list, int val) {
     if (ArrayList_contains(list, val)) {
         printf("list contains %d\n", val);
@@ -79,4 +104,4 @@ void print_contains(ArrayList *list, int val) {
         printf("list does not contain %d\n", val);
     }
 }
-*/
+
