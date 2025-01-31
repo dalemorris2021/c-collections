@@ -1,35 +1,37 @@
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "array_list.h"
 
 ArrayList *ArrayList_new(void) {
-    int INITIAL_CAPACITY = 10;
+    int32_t INITIAL_CAPACITY = 10;
 
     ArrayList *list = malloc(sizeof(ArrayList));
-    list->vals = malloc(INITIAL_CAPACITY * sizeof(int));
+    list->vals = malloc(INITIAL_CAPACITY * sizeof(int32_t));
     list->size = 0;
     list->capacity = INITIAL_CAPACITY;
 
     return list;
 }
 
-int ArrayList_isFull(ArrayList *list) {
+bool ArrayList_isFull(ArrayList *list) {
     return list->size == list->capacity;
 }
 
 void ArrayList_expand(ArrayList *list) {
-    int EXPANSION_FACTOR = 2;
+    int32_t EXPANSION_FACTOR = 2;
 
-    int *newVals = malloc(EXPANSION_FACTOR * list->capacity * sizeof(int));
-    memcpy(newVals, list->vals, list->capacity * sizeof(int));
+    int32_t *newVals = malloc(EXPANSION_FACTOR * list->capacity * sizeof(int32_t));
+    memcpy(newVals, list->vals, list->capacity * sizeof(int32_t));
     free(list->vals);
     list->vals = newVals;
     list->capacity *= 2;
 }
 
-void ArrayList_add(ArrayList *list, int val) {
+void ArrayList_add(ArrayList *list, int32_t val) {
     if (!list) {
         return;
     }
@@ -46,7 +48,7 @@ void ArrayList_add(ArrayList *list, int val) {
     list->size++;
 }
 
-void ArrayList_addIndex(ArrayList *list, int index, int val) {
+void ArrayList_addIndex(ArrayList *list, size_t index, int32_t val) {
     if (!list) {
         return;
     }
@@ -55,7 +57,7 @@ void ArrayList_addIndex(ArrayList *list, int index, int val) {
         return;
     }
 
-    if (index < 0 || index > list->size) {
+    if (index > (size_t)list->size) {
         return;
     }
 
@@ -63,16 +65,16 @@ void ArrayList_addIndex(ArrayList *list, int index, int val) {
         ArrayList_expand(list);
     }
 
-    if (index == list->size) {
+    if (index == (size_t)list->size) {
         list->vals[list->size] = val;
         list->size++;
         return;
     }
 
-    int temp1 = list->vals[index];
+    int32_t temp1 = list->vals[index];
     list->vals[index] = val;
-    for (int i = index + 1; i < list->size; i++) {
-        int temp2 = list->vals[i];
+    for (size_t i = index + 1; i < (size_t)list->size; i++) {
+        int32_t temp2 = list->vals[i];
         list->vals[i] = temp1;
         temp1 = temp2;
     }
@@ -81,7 +83,7 @@ void ArrayList_addIndex(ArrayList *list, int index, int val) {
     list->size++;
 }
 
-void ArrayList_remove(ArrayList *list, int val) {
+void ArrayList_remove(ArrayList *list, int32_t val) {
     if (!list) {
         return;
     }
@@ -94,23 +96,23 @@ void ArrayList_remove(ArrayList *list, int val) {
         return;
     }
 
-    int index = 0;
-    while (index < list->size && list->vals[index] != val) {
+    size_t index = 0;
+    while (index < (size_t)list->size && list->vals[index] != val) {
         index++;
     }
 
-    if (index == list->size) {
+    if (index == (size_t)list->size) {
         return;
     }
 
-    for (int i = index; i < list->size - 1; i++) {
+    for (size_t i = index; i < (size_t)list->size - 1; i++) {
         list->vals[i] = list->vals[i + 1];
     }
 
     list->size--;
 }
 
-void ArrayList_removeIndex(ArrayList *list, int index) {
+void ArrayList_removeIndex(ArrayList *list, size_t index) {
     if (!list) {
         return;
     }
@@ -123,19 +125,19 @@ void ArrayList_removeIndex(ArrayList *list, int index) {
         return;
     }
 
-    if (index < 0 || index >= list->size) {
+    if (index >= (size_t)list->size) {
         return;
     }
 
-    for (int i = index; i < list->size - 1; i++) {
+    for (size_t i = index; i < (size_t)list->size - 1; i++) {
         list->vals[i] = list->vals[i + 1];
     }
 
     list->size--;
 }
 
-int ArrayList_contains(ArrayList *list, int val) {
-    for (int i = 0; i < list->size; i++) {
+bool ArrayList_contains(ArrayList *list, int32_t val) {
+    for (size_t i = 0; i < (size_t)list->size; i++) {
         if (val == list->vals[i]) {
             return 1;
         }

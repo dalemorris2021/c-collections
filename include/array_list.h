@@ -1,22 +1,25 @@
+#include <stdbool.h>
+#include <stdint.h>
+
 #pragma once
 
 typedef struct ArrayList {
-    int *vals;
-    int size;
-    int capacity;
+    int32_t *vals;
+    int32_t size;
+    int32_t capacity;
 } ArrayList;
 
 ArrayList *ArrayList_new(void);
 
-void ArrayList_add(ArrayList *list, int val);
+void ArrayList_add(ArrayList *list, int32_t val);
 
-void ArrayList_addIndex(ArrayList *list, int pos, int val);
+void ArrayList_addIndex(ArrayList *list, size_t index, int32_t val);
 
-void ArrayList_remove(ArrayList *list, int val);
+void ArrayList_remove(ArrayList *list, int32_t val);
 
-void ArrayList_removeIndex(ArrayList *list, int index);
+void ArrayList_removeIndex(ArrayList *list, size_t index);
 
-int ArrayList_contains(ArrayList *list, int val);
+bool ArrayList_contains(ArrayList *list, int32_t val);
 
 void ArrayList_clear(ArrayList *list);
 

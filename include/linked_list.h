@@ -1,26 +1,29 @@
+#include <stdbool.h>
+#include <stdint.h>
+
 #pragma once
 
 typedef struct Node {
-    int val;
+    int32_t val;
     struct Node *next;
 } Node;
 
 typedef struct LinkedList {
     Node *head;
-    int size;
+    int32_t size;
 } LinkedList;
 
 LinkedList *LinkedList_new(void);
 
-void LinkedList_add(LinkedList *list, int val);
+void LinkedList_add(LinkedList *list, int32_t val);
 
-void LinkedList_addIndex(LinkedList *list, int pos, int val);
+void LinkedList_addIndex(LinkedList *list, size_t index, int32_t val);
 
-void LinkedList_remove(LinkedList *list, int val);
+void LinkedList_remove(LinkedList *list, int32_t val);
 
-void LinkedList_removeIndex(LinkedList *list, int index);
+void LinkedList_removeIndex(LinkedList *list, size_t index);
 
-int LinkedList_contains(LinkedList *list, int val);
+bool LinkedList_contains(LinkedList *list, int32_t val);
 
 void LinkedList_clear(LinkedList *list);
 

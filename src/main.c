@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,9 +7,9 @@
 
 void print_list(ArrayList *list, char *separator);
 
-void print_contains(ArrayList *list, int val);
+void print_contains(ArrayList *list, int32_t val);
 
-int main(void) {
+int32_t main(void) {
     char *separator = ", ";
 
     ArrayList *list = ArrayList_new();
@@ -48,7 +49,7 @@ int main(void) {
 
     printf("capacity = %d\n", list->capacity);
 
-    for (int i = 0; i < 6; i++) {
+    for (size_t i = 0; i < 6; i++) {
         ArrayList_add(list, i);
         print_list(list, separator);
     }
@@ -90,18 +91,17 @@ void print_list(ArrayList *list, char *separator) {
         printf("%d", list->vals[0]);
     }
 
-    for (int i = 1; i < list->size; i++) {
+    for (size_t i = 1; i < (size_t)list->size; i++) {
         printf("%s%d", separator, list->vals[i]);
     }
 
     printf("\n");
 }
 
-void print_contains(ArrayList *list, int val) {
+void print_contains(ArrayList *list, int32_t val) {
     if (ArrayList_contains(list, val)) {
         printf("list contains %d\n", val);
     } else {
         printf("list does not contain %d\n", val);
     }
 }
-

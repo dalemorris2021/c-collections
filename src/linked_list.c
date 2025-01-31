@@ -1,3 +1,5 @@
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "linked_list.h"
@@ -8,7 +10,7 @@ LinkedList *LinkedList_new(void) {
     return list;
 }
 
-void LinkedList_add(LinkedList *list, int val) {
+void LinkedList_add(LinkedList *list, int32_t val) {
     if (!list) {
         return;
     }
@@ -30,12 +32,12 @@ void LinkedList_add(LinkedList *list, int val) {
     list->size += 1;
 }
 
-void LinkedList_addIndex(LinkedList *list, int index, int val) {
+void LinkedList_addIndex(LinkedList *list, size_t index, int32_t val) {
     if (!list) {
         return;
     }
 
-    if (index < 0 || index > list->size) {
+    if (index > (size_t)list->size) {
         return;
     }
 
@@ -49,7 +51,7 @@ void LinkedList_addIndex(LinkedList *list, int index, int val) {
     }
 
     Node *current = list->head;
-    for (int i = 0; i < index - 1; i++) {
+    for (size_t i = 0; i < index - 1; i++) {
         current = current->next;
     }
 
@@ -58,7 +60,7 @@ void LinkedList_addIndex(LinkedList *list, int index, int val) {
     list->size += 1;
 }
 
-void LinkedList_remove(LinkedList *list, int val) {
+void LinkedList_remove(LinkedList *list, int32_t val) {
     if (!list) {
         return;
     }
@@ -88,7 +90,7 @@ void LinkedList_remove(LinkedList *list, int val) {
     }
 }
 
-void LinkedList_removeIndex(LinkedList *list, int index) {
+void LinkedList_removeIndex(LinkedList *list, size_t index) {
     if (!list) {
         return;
     }
@@ -97,7 +99,7 @@ void LinkedList_removeIndex(LinkedList *list, int index) {
         return;
     }
 
-    if (index < 0 || index >= list->size) {
+    if (index >= (size_t)list->size) {
         return;
     }
 
@@ -111,7 +113,7 @@ void LinkedList_removeIndex(LinkedList *list, int index) {
     }
 
     Node *current = list->head;
-    for (int i = 0; i < index - 1; i++) {
+    for (size_t i = 0; i < index - 1; i++) {
         current = current->next;
     }
     oldNode = current->next;
@@ -120,7 +122,7 @@ void LinkedList_removeIndex(LinkedList *list, int index) {
     list->size -= 1;
 }
 
-int LinkedList_contains(LinkedList *list, int val) {
+bool LinkedList_contains(LinkedList *list, int32_t val) {
     if (!list) {
         return 0;
     }
