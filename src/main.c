@@ -1,107 +1,94 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "array_list.h"
-#include "linked_list.h"
+#include "doubly_linked_list.h"
 
-void print_list(ArrayList *list, char *separator);
+char *strdup(const char *s);
 
-void print_contains(ArrayList *list, int32_t val);
+void print_list(DoublyLinkedList *list, char *separator);
+
+void print_contains(DoublyLinkedList *list, char *val);
+
+void print_indexOf(DoublyLinkedList *list, char *val);
 
 int32_t main(void) {
     char *separator = ", ";
 
-    ArrayList *list = ArrayList_new();
-    printf("Fresh list\n");
+    DoublyLinkedList *list = DoublyLinkedList_create();
+    
+    char *s1 = strdup("dog");
+    char *s2 = strdup("frog");
+    char *s3 = strdup("alligator");
+    char *s4 = strdup("oven");
+    char *s5 = strdup("of out");
+    
+    DoublyLinkedList_addIndex(list, s1, 0);
+    DoublyLinkedList_addIndex(list, s2, 1);
+    DoublyLinkedList_addIndex(list, s3, 2);
+    DoublyLinkedList_addIndex(list, s4, 0);
+    DoublyLinkedList_addIndex(list, s5, 2);
 
-    print_list(list, separator);
+    print_list(list, separator); // oven, dog, of out, frog, alligator
 
-    ArrayList_add(list, 4);
-    printf("4 added\n");
-    printf("size of list = %d\n", list->size);
+    DoublyLinkedList_removeIndex(list, 4);
+    DoublyLinkedList_removeIndex(list, 0);
+    DoublyLinkedList_removeIndex(list, 1);
 
-    print_list(list, separator);
+    print_list(list, separator); // dog, frog
 
-    ArrayList_add(list, 7);
-    printf("7 added\n");
-    printf("size of list = %d\n", list->size);
+    print_contains(list, "dog"); // contains
+    print_contains(list, "oven"); // does not contain
 
-    print_list(list, separator);
+    print_indexOf(list, "dog");
+    print_indexOf(list, "frog");
 
-    ArrayList_addIndex(list, 0, 20);
-    printf("20 added\n");
-    printf("size of list = %d\n", list->size);
+    DoublyLinkedList_destroy(list);
 
-    print_list(list, separator);
-
-    ArrayList_addIndex(list, 2, 40);
-    printf("40 added\n");
-    printf("size of list = %d\n", list->size);
-
-    print_list(list, separator);
-
-    ArrayList_addIndex(list, 4, 30);
-    printf("30 added\n");
-    printf("size of list = %d\n", list->size);
-
-    print_list(list, separator);
-
-    printf("capacity = %d\n", list->capacity);
-
-    for (size_t i = 0; i < 6; i++) {
-        ArrayList_add(list, i);
-        print_list(list, separator);
-    }
-
-    printf("size of list = %d\n", list->size);
-    print_list(list, separator);
-    printf("capacity = %d\n", list->capacity);
-
-    print_list(list, separator);
-
-    print_contains(list, 4);
-    print_contains(list, 8);
-    print_contains(list, 7);
-    print_contains(list, 0);
-    print_contains(list, -2);
-    print_contains(list, 100);
-
-    ArrayList_remove(list, 4);
-
-    printf("size of list = %d\n", list->size);
-    print_list(list, separator);
-
-    ArrayList_removeIndex(list, 3);
-    print_list(list, separator);
+    exit(EXIT_SUCCESS);
 }
 
-void print_list(ArrayList *list, char *separator) {
-    if (!list) {
+char *strdup(const char *s) {
+    size_t size = strlen(s) + 1;
+    char *p = malloc(size);
+    if (p) {
+        memcpy(p, s, size);
+    }
+    return p;
+}
+
+void print_list(DoublyLinkedList *list, char *separator) {
+    if (!list || list->size == 0) {
         return;
     }
 
-    if (!list->vals) {
+    printf("%s", list->head->val);
+
+    if (!list->head->next) {
+        printf("\n");
         return;
     }
 
-    printf("List: ");
-    
-    if (list->size >= 1) {
-        printf("%d", list->vals[0]);
+    Node *currentNode = list->head->next;
+    for (size_t i = 1; i < (size_t) list->size; i++) {
+        printf("%s%s", separator, currentNode->val);
+        currentNode = currentNode->next;
     }
-
-    for (size_t i = 1; i < (size_t)list->size; i++) {
-        printf("%s%d", separator, list->vals[i]);
-    }
-
     printf("\n");
 }
 
-void print_contains(ArrayList *list, int32_t val) {
-    if (ArrayList_contains(list, val)) {
-        printf("list contains %d\n", val);
+void print_contains(DoublyLinkedList *list, char *val) {
+    if (DoublyLinkedList_contains(list, val)) {
+        printf("list contains %s\n", val);
     } else {
-        printf("list does not contain %d\n", val);
+        printf("list does not contain %s\n", val);
     }
+}
+
+void print_indexOf(DoublyLinkedList *list, char *val) {
+    size_t index = DoublyLinkedList_indexOf(list, val);
+
+    printf("Index of %s: %zu\n", val, index);
 }
